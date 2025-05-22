@@ -1,70 +1,166 @@
-import React, { useState, useEffect } from 'react';
-import '../styles/Profile.css';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import styles from '../styles/Profile.module.css';
 import apiService from '../api';
 
 export default function Profile() {
-  const [showProgress, setShowProgress] = useState(false);
-  const [showFriends, setShowFriends] = useState(false);
-  const [profile, setProfile] = useState(null);
+  const { username } = useParams();
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isFriend, setIsFriend] = useState(false);
+  const [isCurrentUser, setIsCurrentUser] = useState(false);
+
+  // Получаем своё имя из localStorage
+  const currentUsername = localStorage.getItem('username');
 
   useEffect(() => {
-    const fetchProfile = async () => {
+    async function fetchUser() {
       try {
-        const response = await apiService.getProfile();
-        setProfile(response.data);
+        setLoading(true);
+        const target = username || 'me';
+        const response = await apiService.getUserProfile(target);
+        console.log('User data:', response.data);
+        setUser(response.data);
+        
+        // Определяем, чьё это профиль
+        const owner = response.data.username;
+        setIsCurrentUser(owner === currentUsername);
+        
+        if (owner !== currentUsername) {
+          const friendship = await apiService.checkFriendship(response.data.id);
+          setIsFriend(friendship.data.isFriend);
+        }
       } catch (error) {
-        console.error('Error fetching profile:', error);
+        console.error('Error fetching user profile:', error);
+        navigate('/');
       } finally {
         setLoading(false);
       }
-    };
+    }
+    fetchUser();
+  }, [username, navigate, currentUsername]);
 
-    fetchProfile();
-  }, []);
+  const handleAddFriend = async () => {
+    try {
+      await apiService.addFriend({ userId: user.id });
+      setIsFriend(true);
+    } catch (error) {
+      console.error('Error adding friend:', error);
+    }
+  };
 
   if (loading) {
-    return <div className="profile-container">Загрузка...</div>;
+    return (
+      <div className={styles.profileContainer}>
+        <div>Loading...</div>
+      </div>
+    );
   }
 
+  if (!user) {
+    return (
+      <div className={styles.profileContainer}>
+        <div>User not found</div>
+      </div>
+    );
+  }
+
+  console.log('Rendering user:', user);
+
   return (
-    <div className="profile-container">
-      <div className="avatar" />
-      <h1 className="profile-name">{profile.name}</h1>
-      <p className="profile-tag">@{profile.email.split('@')[0]}</p>
-      <p className="profile-location">CITY, REGION</p>
+    <div className={styles.profileContainer}>
+      {/* "My Profile" button */}
+      {!isCurrentUser && (
+        <div className={styles.myProfileWrap}>
+          <Link to="/myprofile" className={styles.myProfileBtn}>
+            My Profile
+          </Link>
+        </div>
+      )}
 
-      <div className="section">
+      <div 
+        className={styles.avatar} 
+        style={{ backgroundImage: user.avatarUrl ? `url(${user.avatarUrl})` : 'none' }} 
+      />
+      <h1 className={styles.profileName}>{user.name}</h1>
+      <p className={styles.profileTag}>@{user.username}</p>
+      <p className={styles.profileLocation}>{user.city}, {user.region}</p>
+
+      {!isCurrentUser && !isFriend && (
         <button 
-          className="section-toggle"
-          onClick={() => setShowProgress(!showProgress)}
+          className={styles.addFriendBtn}
+          onClick={handleAddFriend}
         >
-          PROGRESS {showProgress ? '▴' : '▾'}
+          Add to Friends
         </button>
-        {showProgress && (
-          <div className="progress-stats">
-            <div><strong>ACTIVE ACHIEVEMENTS</strong> — X</div>
-            <div><strong>COMPLETED ACHIEVEMENTS</strong> — Y</div>
-            <div><strong>MOST ACTIVE DAYS</strong> — @DIAGRAM</div>
-            <div className="chart-placeholder">[GRAPH]</div>
+      )}
+
+      <div className={styles.progressSection}>
+        <h2 className={styles.progressTitle}>Progress</h2>
+        <div className={styles.progressList}>
+          <div className={styles.progressItem}>
+            <div className={styles.progressItemTitle}>Achievements</div>
+            <div className={styles.progressItemValue}>{user.achievementsCount || 0}</div>
           </div>
-        )}
+          <div className={styles.progressItem}>
+            <div className={styles.progressItemTitle}>Goals Completed</div>
+            <div className={styles.progressItemValue}>{user.completedGoals || 0}</div>
+          </div>
+          <div className={styles.progressItem}>
+            <div className={styles.progressItemTitle}>Friends</div>
+            <div className={styles.progressItemValue}>{user.friendsCount || 0}</div>
+          </div>
+        </div>
       </div>
 
-      <div className="section">
-        <button 
-          className="section-toggle"
-          onClick={() => setShowFriends(!showFriends)}
-        >
-          FRIENDS {showFriends ? '▴' : '▾'}
-        </button>
-        {showFriends && (
-          <div className="progress-stats">
-            {/* Здесь можно отобразить компонент Friends */}
-            <p>Список друзей будет здесь</p>
+      {user.friends && user.friends.length > 0 && (
+        <div className={styles.friendsSection}>
+          <h2 className={styles.friendsTitle}>Friends</h2>
+          <div className={styles.friendsList}>
+            {user.friends.map(friend => (
+              <Link
+                key={friend.id}
+                to={`/profile/${friend.username}`}
+                className={styles.friendItem}
+              >
+                <div
+                  className={styles.friendAvatar}
+                  style={{ backgroundImage: friend.avatarUrl ? `url(${friend.avatarUrl})` : 'none' }}
+                />
+                <div className={styles.friendInfo}>
+                  <div className={styles.friendName}>{friend.name}</div>
+                  <div className={styles.friendTag}>@{friend.username}</div>
+                </div>
+              </Link>
+            ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      {user.achievements && user.achievements.length > 0 && (
+        <div className={styles.achievementsSection}>
+          <h2 className={styles.achievementsTitle}>Achievements</h2>
+          <div className={styles.achievementsList}>
+            {console.log('Achievements:', user.achievements)}
+            {user.achievements.map(ach => (
+              <Link
+                key={ach.id}
+                to={`/achievements/${ach.id}`}
+                className={styles.achievementItem}
+              >
+                <div
+                  className={styles.achievementThumb}
+                  style={{ backgroundImage: ach.imageUrl ? `url(${ach.imageUrl})` : 'none' }}
+                />
+                <div className={styles.achievementInfo}>
+                  <div className={styles.achievementName}>{ach.title}</div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 } 

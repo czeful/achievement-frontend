@@ -1,75 +1,98 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import apiService from '../api';
-import styles from '../styles/Register.module.css';
+import styles from '../styles/Auth.module.css'; // <-- тот же файл, что для Login
 
 export default function Register() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+    name: '', email: '', password: '', confirmPassword: ''
   });
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+  const handleChange = e => {
+    setFormData(f => ({ ...f, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setError('');
 
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      setError('Пароли не совпадают');
       return;
     }
 
     try {
+      // тестовый вход
       if (formData.email === 'test' && formData.password === '1234') {
         localStorage.setItem('token', 'test-token');
-        navigate('/goals');
+        localStorage.setItem('username', 'test_user');
+        navigate('/discover');
         return;
       }
-
-      const response = await apiService.register(formData);
-      localStorage.setItem('token', response.token);
-      navigate('/goals');
+      const res = await apiService.register(formData);
+      localStorage.setItem('token', res.token);
+      localStorage.setItem('username', res.user.username);
+      navigate('/discover');
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration error');
+      setError(err.response?.data?.message || 'Ошибка при регистрации');
     }
   };
 
   return (
-    <div className={styles.registerContainer}>
-      <h2 className={styles.registerTitle}>Register</h2>
-      {error && <div className={styles.registerError}>{error}</div>}
-      <form onSubmit={handleSubmit} className={styles.registerForm}>
-        <div className={styles.registerGroup}>
-          <label htmlFor="name">Name</label>
-          <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />
-        </div>
-        <div className={styles.registerGroup}>
-          <label htmlFor="email">Email</label>
-          <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
-        </div>
-        <div className={styles.registerGroup}>
-          <label htmlFor="password">Password</label>
-          <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} required />
-        </div>
-        <div className={styles.registerGroup}>
-          <label htmlFor="confirmPassword">Confirm Password</label>
-          <input type="password" id="confirmPassword" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
-        </div>
-        <button type="submit" className={styles.registerButton}>Register</button>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Register</h1>
+      {error && <p style={{ color: 'red', marginBottom: '15px' }}>{error}</p>}
+      <form onSubmit={handleSubmit}>
+        <input
+          className={styles.input}
+          name="name"
+          placeholder="Your name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+        />
+        <input
+          className={styles.input}
+          type="email"
+          name="email"
+          placeholder="some@example.com"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+        <input
+          className={styles.input}
+          type="password"
+          name="password"
+          placeholder="••••••••"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
+        <input
+          className={styles.input}
+          type="password"
+          name="confirmPassword"
+          placeholder="••••••••"
+          value={formData.confirmPassword}
+          onChange={handleChange}
+          required
+        />
+        <button type="submit" className={styles.primaryBtn}>
+          REGISTER
+        </button>
       </form>
-      <p className={styles.registerText}>
-        Already have an account? <Link to="/login" className={styles.registerLink}>Login</Link>
-      </p>
+      <button
+        className={styles.secondaryBtn}
+        onClick={() => navigate('/register-with-phone')}
+      >
+        REGISTER WITH PHONE NUMBER
+      </button>
+      <Link to="/login" className={styles.link}>
+        ALREADY HAVE AN ACCOUNT?
+      </Link>
     </div>
   );
-} 
+}

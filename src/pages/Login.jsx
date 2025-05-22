@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import styles from '../styles/Auth.module.css';
+import apiService from '../api';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -15,14 +16,16 @@ export default function Login() {
     // Простая проверка для тестового пользователя
     if (email === 'test' && password === '1234') {
       localStorage.setItem('token', 'test_token');
-      navigate('/goals');
+      localStorage.setItem('username', 'test_user');
+      navigate('/discover');
       return;
     }
 
     try {
-      const response = await apiService.login({ email, password });
-      localStorage.setItem('token', response.data.token);
-      navigate('/goals');
+      const { data } = await apiService.login({ email, password });
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('username', data.user.username);
+      navigate('/achievements');
     } catch (error) {
       setError('Неверный email или пароль');
     }
