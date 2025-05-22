@@ -1,0 +1,111 @@
+.profile-container,
+.settings-container,
+.achievement-options-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #f3c6c6;
+  margin: 0 auto 20px;
+}
+
+.profile-name {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.profile-tag {
+  font-size: 16px;
+  color: gray;
+}
+
+.profile-location {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.section {
+  margin: 20px 0;
+}
+
+.section-toggle {
+  background: black;
+  color: yellow;
+  font-weight: bold;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.progress-stats {
+  background: #fff;
+  text-align: left;
+  margin-top: 15px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.chart-placeholder {
+  background: #ddd;
+  height: 180px;
+  margin-top: 10px;
+  text-align: center;
+  line-height: 180px;
+  color: #555;
+}
+
+.settings-title {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 40px;
+}
+
+.logout-btn {
+  background: none;
+  color: red;
+  border: 2px solid red;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.option-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.option-btn {
+  border: 2px solid black;
+  padding: 12px;
+  font-weight: bold;
+  background: white;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.delete-btn {
+  background: none;
+  color: red;
+  border: 2px solid red;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+} 

@@ -1,0 +1,90 @@
+.registerContainer {
+  max-width: 400px;
+  margin: 60px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.registerTitle {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 40px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+}
+
+.registerError {
+  color: red;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 14px;
+}
+
+.registerForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.registerGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.registerGroup label {
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+}
+
+.registerGroup input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.registerGroup input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.registerButton {
+  background: linear-gradient(to right, #000, #222);
+  color: yellow;
+  padding: 12px;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+.registerButton:hover {
+  background: linear-gradient(to right, #111, #333);
+}
+
+.registerText {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #666;
+}
+
+.registerLink {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.2s;
+}
+
+.registerLink:hover {
+  color: #0056b3;
+} 

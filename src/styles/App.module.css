@@ -1,0 +1,120 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  background: linear-gradient(to right, #000, #222);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.headerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.logoLink {
+  color: yellow;
+  text-decoration: none;
+  transition: color 0.2s;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+}
+
+.logoLink:hover {
+  color: #fff;
+}
+
+.nav {
+  display: flex;
+  gap: 2rem;
+}
+
+.navLink {
+  color: yellow;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: color 0.2s;
+  position: relative;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+}
+
+.navLink:hover {
+  color: #fff;
+}
+
+.navLink::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: yellow;
+  transition: width 0.2s;
+}
+
+.navLink:hover::after {
+  width: 100%;
+}
+
+.auth {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.authLink {
+  color: yellow;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: color 0.2s;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+}
+
+.authLink:hover {
+  color: #fff;
+}
+
+.authButton {
+  background: none;
+  color: yellow;
+  border: 2px solid yellow;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(255,255,0,0.3);
+  transition: all 0.2s;
+}
+
+.authButton:hover {
+  background: rgba(255,255,0,0.1);
+  color: #fff;
+  border-color: #fff;
+}
+
+.main {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+} 

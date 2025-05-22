@@ -1,0 +1,81 @@
+.friends-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.profile-name {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 10px 0;
+  text-decoration: underline;
+}
+
+.profile-tag {
+  font-size: 16px;
+  color: gray;
+}
+
+.profile-location {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.friends-block {
+  border: 2px solid black;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.friends-title {
+  background-color: black;
+  color: yellow;
+  font-weight: bold;
+  padding: 10px;
+  font-size: 18px;
+}
+
+.friend-list {
+  padding: 15px;
+}
+
+.friend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #f3c6c6;
+  margin-right: 15px;
+}
+
+.friend-info {
+  flex-grow: 1;
+  text-align: left;
+}
+
+.friend-name {
+  font-weight: bold;
+}
+
+.friend-tag {
+  font-size: 14px;
+  color: gray;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #000;
+  cursor: pointer;
+} 
